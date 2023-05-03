@@ -1,3 +1,15 @@
+import numpy as np
+import pandas as pd
+
+# image processing imports
+import skimage.io as io
+from skimage.transform import resize
+
+from skimage.feature import hog
+
+# dealing with files
+import os
+
 '''
 Input:
     images: a list or array-like object containing the input data, where each row represents an image
@@ -102,10 +114,17 @@ def FeatureExtraction(image):
         TODO: Feature Extraction code should be implemented here.  
 
     '''
+    
+    resized_image = resize(image,(500,500))   # downscaing from approx 2500x4000 to 500x500
+    
+    # Extract the hog features
+    # block_norm uses L2 norm with hysterisis for reducing effect of illuminacity
+    # transform_sqrt for applying gamma correction
+    hog_features, hog_image = hog(resized_image, block_norm='L2-Hys', feature_vector=True, transform_sqrt=True, visualize=True)
 
-    image = np.array(resized).flatten() # flatten our image to be used as input vector to our model
+    # image = np.array(resized).flatten() # flatten our image to be used as input vector to our model
 
-    return image
+    return hog_features, hog_image
 
     
 '''
@@ -129,3 +148,13 @@ def preprocess(image):
     '''
     
     return preprocessed_image
+
+
+def main():
+    image = io.imread('hand.jpg' ,as_gray=True)
+    hog_features, hog_image = FeatureExtraction(image)
+    io.imshow(hog_features)
+    
+    
+if __name__ == '__main__':
+    main()
