@@ -87,6 +87,7 @@ def LoadData():
 
                 # append extracted features to Featurees list           
                 Features.append(FeatureExtraction(img_array)) 
+                
 
                 # append class of image.
                 labels.append(hand)     
@@ -120,11 +121,11 @@ def FeatureExtraction(image):
     # Extract the hog features
     # block_norm uses L2 norm with hysterisis for reducing effect of illuminacity
     # transform_sqrt for applying gamma correction
-    hog_features, hog_image = hog(resized_image, block_norm='L2-Hys', feature_vector=True, transform_sqrt=True, visualize=True)
+    hog_features = hog(resized_image, block_norm='L2-Hys', feature_vector=True, transform_sqrt=True)
 
     # image = np.array(resized).flatten() # flatten our image to be used as input vector to our model
 
-    return hog_features, hog_image
+    return hog_features
 
     
 '''
