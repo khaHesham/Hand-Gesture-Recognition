@@ -7,6 +7,8 @@ from skimage.transform import resize
 
 from skimage.feature import hog
 
+import cv2
+
 # dealing with files
 import os
 
@@ -120,11 +122,13 @@ def FeatureExtraction(image):
     # Extract the hog features
     # block_norm uses L2 norm with hysterisis for reducing effect of illuminacity
     # transform_sqrt for applying gamma correction
-    hog_features, hog_image = hog(resized_image, block_norm='L2-Hys', feature_vector=True, transform_sqrt=True, visualize=True)
+    segmented = segment(resized_image)
+
+    hog_features = hog(resized_image, block_norm='L2-Hys', feature_vector=True, transform_sqrt=True)
 
     # image = np.array(resized).flatten() # flatten our image to be used as input vector to our model
 
-    return hog_features, hog_image
+    return hog_features
 
     
 '''
@@ -148,6 +152,30 @@ def preprocess(image):
     '''
     
     return preprocessed_image
+
+def segment(image):
+    blured_image = cv2.GaussianBlur(image, (7, 7), 0)
+    ycbcr_image = cv2.cvtColor(blured_image, cv2.COLOR_BGR2YCrCb)
+    # Extract the Cr channel
+    cr_channel = ycbcr_image[:,:,1]
+
+    # Apply thresholding to obtain a binary image
+    _, binary_img = cv2.threshold(cr_channel,0,255,cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+    # Define the structuring element for the closing operation
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (25, 25))
+
+    # Perform the closing operation
+    closed_img = cv2.morphologyEx(binary_img, cv2.MORPH_CLOSE, kernel)
+
+    # Find the contours in the binary image
+    contours, hierarchy = cv2.findContours(closed_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Filling the contours on a copy of the original image
+    img_contours = cv2.cvtColor(cr_channel, cv2.COLOR_GRAY2BGR)
+    cv2.drawContours(img_contours, contours, -1, (0, 0, 0), -1)
+
+    return img_contours
 
 
 def main():
