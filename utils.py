@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 # sklearn imports
 from sklearn.preprocessing import StandardScaler
-
+from sklearn.decomposition import PCA
 # image processing imports
 import skimage.io as io
 from skimage.transform import resize
@@ -313,7 +313,7 @@ def matching(des1, des2):
     return matches
 
 
-def PCA(features):
+def PrincipalComponentAnalysisPCA(NormalizedFeatures):
     '''
         Purpose: 
             * This function is used to extract the most important features from a bulk of features, in order 
@@ -332,10 +332,47 @@ def PCA(features):
                 4. Sort the eigenvalues in descending order and choose the first K eigenvalues, where K is the
                 number of diminsions you want. 
                 5. Compute the projection matrix: Z = U^T * Y, where U is the matrix of the eigenvectors
+        Inputs:
+            NormalizedFeatures: they are the features after applying feature scaling by normalizing them.
         Reference:
             lecture 6 notes.
             https://www.datacamp.com/tutorial/principal-component-analysis-in-python
     '''
+    #! this n_components should be evaluated dynamically to get the best value for it.
+    pcaFeatureExtractor = PCA(n_components=150000)
+    extractedFeatures = pcaFeatureExtractor.fit_transform(NormalizedFeatures)
+
+    # ? this will provide us with the amount of information or variance each principal component holds
+    # ? after projecting the data to a lower dimensional subspace.
+    # ? in other words it will tell us each feature carries how much percent of the informations.
+    print('Explained variation per principal component: {}'.format(
+        extractedFeatures.explained_variance_ratio_))
+
+    #!!!!!!!!!!!!!!! trying to speed up the code !!!!!!!!!!!!!!!!!!!!#
+    # 0.85 tell the PCA how much variance we need and the number of components required to capture 86% variance.
+    # Note that earlier you passed n_components as a parameter and you could then
+    #  find out how much variance was captured by those two components.
+    # But here we explicitly mention how much variance we would like PCA to capture and hence,
+    # the n_components will vary based on the variance parameter.
+    pca = PCA(0.85)
+
+    # fitting pca on the data
+    pca.fit(NormalizedFeatures)
+
+    # this line was existing in the site, but I don't understand whethere I should use it or not
+    #  PCA(copy=True, iterated_power='auto', n_components=0.9, random_state=None,
+    #   svd_solver='auto', tol=0.0, whiten=False)
+
+    # now we can check on the number of components used
+    numberOfComponents = pca.n_components_
+    print('number of components: ', numberOfComponents)
+
+    # lets apply the transofrm function on the data.
+    pcaFeatures = pca.transform(NormalizedFeatures)
+    return pcaFeatures
+#! what is the difference between .fit and .transform?
+#! I still need some clarifications.
+# https://towardsdatascience.com/fit-vs-transform-in-scikit-libraries-for-machine-learning-3c70e6300ded
 
 
 def main():
