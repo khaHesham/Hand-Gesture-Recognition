@@ -224,6 +224,8 @@ def featureScalingUsingSklearn(features):
             this function is used to scale the features to be in the range [0,1]
             this is done by subtracting the minimum value from each feature and then dividing by the range
             of the feature.
+        Reference: 
+            https://stackabuse.com/feature-scaling-data-with-scikit-learn-for-machine-learning-in-python/
     '''
     scaler = StandardScaler()
     scaledFeatures = scaler.fit_transform(features)
@@ -334,32 +336,39 @@ def PrincipalComponentAnalysisPCA(NormalizedFeatures):
                 5. Compute the projection matrix: Z = U^T * Y, where U is the matrix of the eigenvectors
         Inputs:
             NormalizedFeatures: they are the features after applying feature scaling by normalizing them.
+        Outputs:
+            pcaFeatures: the features after applying PCA.
         Reference:
             lecture 6 notes.
             https://www.datacamp.com/tutorial/principal-component-analysis-in-python
     '''
-    #! this n_components should be evaluated dynamically to get the best value for it.
-    pcaFeatureExtractor = PCA(n_components=150000)
-    extractedFeatures = pcaFeatureExtractor.fit_transform(NormalizedFeatures)
+    ##########################################################################################
+    # this part I believe that it is not useful, but I will keep it for now.
+    # it just tries to visualise the pca, but we wont use it in the code.
+    # #! this n_components should be evaluated dynamically to get the best value for it.
+    # pcaFeatureExtractor = PCA(n_components=150000)
+    # extractedFeatures = pcaFeatureExtractor.fit_transform(NormalizedFeatures)
 
-    # ? this will provide us with the amount of information or variance each principal component holds
-    # ? after projecting the data to a lower dimensional subspace.
-    # ? in other words it will tell us each feature carries how much percent of the informations.
-    print('Explained variation per principal component: {}'.format(
-        extractedFeatures.explained_variance_ratio_))
+    # # ? this will provide us with the amount of information or variance each principal component holds
+    # # ? after projecting the data to a lower dimensional subspace.
+    # # ? in other words it will tell us each feature carries how much percent of the informations.
+    # print('Explained variation per principal component: {}'.format(
+    #     extractedFeatures.explained_variance_ratio_))
+    ##########################################################################################
 
     #!!!!!!!!!!!!!!! trying to speed up the code !!!!!!!!!!!!!!!!!!!!#
-    # 0.85 tell the PCA how much variance we need and the number of components required to capture 86% variance.
+    # 0.85 tell the PCA how much variance we need and the number of components required to capture 85% variance.
     # Note that earlier you passed n_components as a parameter and you could then
-    #  find out how much variance was captured by those two components.
+    # find out how much variance was captured by those two components.
     # But here we explicitly mention how much variance we would like PCA to capture and hence,
     # the n_components will vary based on the variance parameter.
+    #! this 0.85 also should be modified, I just put it randomly.
     pca = PCA(0.85)
 
     # fitting pca on the data
     pca.fit(NormalizedFeatures)
 
-    # this line was existing in the site, but I don't understand whethere I should use it or not
+    #! this line was existing in the site, but I don't understand whethere I should use it or not
     #  PCA(copy=True, iterated_power='auto', n_components=0.9, random_state=None,
     #   svd_solver='auto', tol=0.0, whiten=False)
 
@@ -367,7 +376,7 @@ def PrincipalComponentAnalysisPCA(NormalizedFeatures):
     numberOfComponents = pca.n_components_
     print('number of components: ', numberOfComponents)
 
-    # lets apply the transofrm function on the data.
+    # lets apply the transform function on the data.
     pcaFeatures = pca.transform(NormalizedFeatures)
     return pcaFeatures
 #! what is the difference between .fit and .transform?
