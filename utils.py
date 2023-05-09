@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+# sklearn imports
+from sklearn.preprocessing import StandardScaler
 
 # image processing imports
 import skimage.io as io
@@ -191,6 +193,42 @@ def segment(image):
 
     return img_contours
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ZIZO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+
+
+def featureScalingManually(features):
+    '''
+        Inputs:
+            features: the features to be scaled
+        Outputs:
+            scaledFeatures: the scaled features
+        Note: 
+            this function is used to scale the features to be in the range [0,1]
+            this is done by subtracting the minimum value from each feature and then dividing by the range
+            of the feature.
+    '''
+    scaledFeatures = np.zeros(features.shape)
+    for i in range(features.shape[1]):
+        scaledFeatures[:, i] = (features[:, i] - np.min(features[:, i])) / \
+            (np.max(features[:, i]) - np.min(features[:, i]))
+    return scaledFeatures
+
+
+def featureScalingUsingSklearn(features):
+    '''
+        Inputs:
+            features: the features to be scaled
+        Outputs:
+            scaledFeatures: the scaled features
+        Note: 
+            this function is used to scale the features to be in the range [0,1]
+            this is done by subtracting the minimum value from each feature and then dividing by the range
+            of the feature.
+    '''
+    scaler = StandardScaler()
+    scaledFeatures = scaler.fit_transform(features)
+    return scaledFeatures
+
 
 def SIFT(image):
     '''
@@ -273,6 +311,31 @@ def matching(des1, des2):
     matches = cv2.BFMatcher(des1, des2)
     matches = sorted(matches, key=lambda x: x.distance)
     return matches
+
+
+def PCA(features):
+    '''
+        Purpose: 
+            * This function is used to extract the most important features from a bulk of features, in order 
+            to enhace the accuracy, speed up the model, and get rid of the curse of dimensionality!
+            * This is one of the feature extraction techniques.
+            * Note that the generated features may have no logical meaning, but they are the best features which 
+            affect the performance of the model. 
+            * it is an Unsupervised dimensionality reduction technique, where we cluster the similar data points
+            based on the features correlation between them without any supervision labels.
+        Algorithm:
+            * The most interesting directions are those which have the larges variations. 
+            * so we move with the following algorithm 
+                1. Transform the data to the zero mean: Y = X - U
+                2. Estimate covariance matrix from data: C = 1/M Summation(Y(m) * Y^T(m))
+                3. Compute the eigenvalues and eigenvectors of the covariance matrix
+                4. Sort the eigenvalues in descending order and choose the first K eigenvalues, where K is the
+                number of diminsions you want. 
+                5. Compute the projection matrix: Z = U^T * Y, where U is the matrix of the eigenvectors
+        Reference:
+            lecture 6 notes.
+            https://www.datacamp.com/tutorial/principal-component-analysis-in-python
+    '''
 
 
 def main():
