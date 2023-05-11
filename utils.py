@@ -413,10 +413,10 @@ def Augmentator(dataSetPath, size):
     p = ag.Pipeline(dataSetPath)
 
     # applying different operations
-    p.zoom(probability=0.5, min_factor=0.5, max_factor=1.5)
+    p.zoom(probability=0.2, min_factor=0.5, max_factor=1)
     p.flip_top_bottom(probability=0.5)
     p.flip_left_right(probability=0.5)
-    p.rotate(probability=0.7, max_left_rotation=40, max_right_rotation=40)
+    p.rotate(probability=0.7, max_left_rotation=20, max_right_rotation=20)
     p.random_brightness(probability=0.5, min_factor=0.5, max_factor=1.5)
     p.random_contrast(probability=0.5, min_factor=0.5, max_factor=1.5)
     p.random_color(probability=0.5, min_factor=0.5, max_factor=1.5)
