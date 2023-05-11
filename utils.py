@@ -290,8 +290,6 @@ def SIFT(image):
                 they are the keys by which we detect the objects. 
         Reference:
             https://www.analyticsvidhya.com/blog/2019/10/detailed-guide-powerful-sift-technique-image-matching-python/
-
-
      '''
 
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -423,6 +421,98 @@ def Augmentator(dataSetPath, size):
     p.random_distortion(probability=0.5, grid_width=4,
                         grid_height=4, magnitude=8)
     return p.sample(size)  # this is the number of images i want to create
+
+
+def get_pixel(img, center, x, y):
+    '''
+    Purpose:
+        this function is used to get the value of the neighbour pixel, whethere it is 1 or 0
+        depending on the LBP algorithm
+        if the pixel has higher intensity than the center, then it should be 1, otherwise it should return 0
+    Inputs:
+        img: our main image
+        center: the center of our window
+        x: the x coordinate of the pixel
+        y: the y cooridnate of the pixel
+    Outputs:
+        1: if the pixel is greater than the center
+        0: otherwise
+    Reference: 
+        https://www.sciencedirect.com/topics/engineering/local-binary-pattern
+    Note: 
+        can this code be vectorized? 
+    '''
+    new_value = 0
+
+    try:
+        # If local neighbourhood pixel
+        # value is greater than or equal
+        # to center pixel values then
+        # set it to 1
+        if img[x][y] >= center:
+            new_value = 1
+
+    except:
+        # Exception is required when
+        # neighbourhood value of a center
+        # pixel value is null i.e. values
+        # present at boundaries.
+        pass
+
+    return new_value
+
+
+def lbp_calculated_pixel(img, x, y):
+    '''
+        Purpose:
+            this function is used to evaluate the lbp value of certain pixel. 
+        Inputs:
+            img: the image on which we apply the lbp
+            x: the x coordinate of the center
+            y: the y coordinate of the center
+        Outputs: 
+            the value of this cell in decimal. 
+        Reference: 
+            https://www.sciencedirect.com/topics/engineering/local-binary-pattern
+    '''
+    center = img[x][y]
+
+    val_ar = []
+
+    # top_left
+    val_ar.append(get_pixel(img, center, x-1, y-1))
+
+    # top
+    val_ar.append(get_pixel(img, center, x-1, y))
+
+    # top_right
+    val_ar.append(get_pixel(img, center, x-1, y + 1))
+
+    # right
+    val_ar.append(get_pixel(img, center, x, y + 1))
+
+    # bottom_right
+    val_ar.append(get_pixel(img, center, x + 1, y + 1))
+
+    # bottom
+    val_ar.append(get_pixel(img, center, x + 1, y))
+
+    # bottom_left
+    val_ar.append(get_pixel(img, center, x + 1, y-1))
+
+    # left
+    val_ar.append(get_pixel(img, center, x, y-1))
+
+    # Now, we need to convert binary
+    # values to decimal, assume we work on window of size 3x3.
+    power_val = [1, 2, 4, 8, 16, 32, 64, 128]
+
+    val = 0
+
+    for i in range(len(val_ar)):
+        val += val_ar[i] * power_val[i]
+
+    return val
 
 
 def main():
