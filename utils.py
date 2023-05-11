@@ -384,6 +384,47 @@ def PrincipalComponentAnalysisPCA(NormalizedFeatures):
 # https://towardsdatascience.com/fit-vs-transform-in-scikit-libraries-for-machine-learning-3c70e6300ded
 
 
+def Augmentator(dataSetPath, size):
+    '''
+        Purpose:
+            This function is created mainly as a preprocessing utility function to generate more data
+            from the existing data, but with different properties to apply data augmentation and avoid 
+            overfitting. 
+        Inputs:
+            dataSetPath: the path of the dataset
+            size: the size of the output augmented data
+        Algorithm:
+            it takes the path of the dataset, and then apply the following operations
+            1. zoom: to zoom in and out the image with certain factors
+            2. flip_top_bottom: to flip the image vertically
+            3. flip_left_right: to flip the image horizontally
+            4. rotate: to rotate the image with certain angles
+            5. random_brightness: to change the brightness of the image with certain factors
+            6. random_contrast: to change the contrast of the image with certain factors
+            7. random_color: to change the color of the image with certain factors
+            8. random_distortion: to distort the image with certain factors
+        Outputs:
+            the augmented data
+        Reference:
+            https://www.youtube.com/watch?v=mygPhlH8un0 
+    '''
+    import Augmentor as ag  # if you do not have it -> pip install Augmentor
+    # hwa bya5ud el path bta3t el sowar el 3auzen ntb2 3leha el shughl
+    p = ag.Pipeline(dataSetPath)
+
+    # applying different operations
+    p.zoom(probability=0.5, min_factor=0.5, max_factor=1.5)
+    p.flip_top_bottom(probability=0.5)
+    p.flip_left_right(probability=0.5)
+    p.rotate(probability=0.7, max_left_rotation=40, max_right_rotation=40)
+    p.random_brightness(probability=0.5, min_factor=0.5, max_factor=1.5)
+    p.random_contrast(probability=0.5, min_factor=0.5, max_factor=1.5)
+    p.random_color(probability=0.5, min_factor=0.5, max_factor=1.5)
+    p.random_distortion(probability=0.5, grid_width=4,
+                        grid_height=4, magnitude=8)
+    return p.sample(size)  # this is the number of images i want to create
+
+
 def main():
     image = io.imread('hand.jpg', as_gray=True)
     hog_features, hog_image = FeatureExtraction(image)
