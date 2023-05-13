@@ -1,0 +1,121 @@
+{on DATASET}
+
+Training Model 1/4: SVCBest score: 0.782Best parameters: {'C': 10.31698132465735, 'coef0': 1, 'degree': 4, 'gamma': 0.6, 'kernel': 'poly', 'max_iter': 500, 'probability': False, 'shrinking': True, 'tol': 1e-05}
+
+
+
+Training Model 2/4: GaussianNBBest score: 0.574Best parameters: {'var_smoothing': 4.5188523379011905e-09}
+
+
+
+Training Model 3/4: KNeighborsClassifierBest score: 0.723Best parameters: {'algorithm': 'brute', 'leaf_size': 62, 'n_neighbors': 15, 'weights': 'distance'}
+
+
+
+Training Model 4/4: RandomForestClassifierBest score: 0.742Best parameters: {'max_depth': 13, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 237}
+
+
+{on SAMPLE}
+
+Training Model 1/4: SVC
+Best score: 0.644
+Best parameters: {'C': 17.804913526143533, 'coef0': -1, 'degree': 2, 'gamma': 'auto', 'kernel': 'linear', 'max_iter': 100, 'probability': False, 'shrinking': False, 'tol': 0.001}
+
+
+
+Training Model 2/4: GaussianNB
+Best score: 0.318
+Best parameters: {'var_smoothing': 1.0230443156698847e-09}
+
+
+
+Training Model 3/4: KNeighborsClassifier
+Best score: 0.533
+Best parameters: {'algorithm': 'kd_tree', 'leaf_size': 10, 'n_neighbors': 3, 'weights': 'distance'}
+
+
+
+Training Model 4/4: RandomForestClassifier
+Best score: 0.664
+Best parameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 9, 'n_estimators': 181}
+
+
+
+Training Model 1/4: SVC
+Best score: 0.616
+Best parameters: {'C': 0.01, 'coef0': -1, 'degree': 2, 'gamma': 0.5, 'kernel': 'poly', 'max_iter': 100, 'probability': True, 'shrinking': True, 'tol': 1e-05}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.682
+Best parameters: {'tol': 0.001, 'shrinking': True, 'probability': True, 'max_iter': 500, 'kernel': 'linear', 'gamma': 0.4, 'degree': 4, 'coef0': -1, 'C': 100}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.778
+Best parameters: {'tol': 0.001, 'shrinking': False, 'probability': False, 'max_iter': -1, 'kernel': 'poly', 'gamma': 0.8, 'degree': 4, 'coef0': 1, 'C': 100}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.236
+Best parameters: {'tol': 0.001, 'shrinking': False, 'probability': False, 'max_iter': -1, 'kernel': 'poly', 'gamma': 0.5, 'degree': 2, 'coef0': 0, 'C': 0.01}
+
+
+
+Training Model 1/5: SVC
+Best score: 0.824
+Best parameters: {'tol': 0.001, 'shrinking': True, 'probability': False, 'max_iter': 1000, 'kernel': 'poly', 'gamma': 0.5, 'degree': 3, 'coef0': 0, 'C': 100}
+
+
+
+Training Model 2/5: RandomForestClassifier
+Best score: 0.775
+Best parameters: {'max_depth': 17, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 278}
+
+
+
+Training Model 3/5: KNeighborsClassifier
+Best score: 0.745
+Best parameters: {'algorithm': 'ball_tree', 'leaf_size': 22, 'n_neighbors': 8, 'weights': 'distance'}
+
+
+
+Training Model 4/5: GaussianNB
+Best score: 0.607
+Best parameters: {'var_smoothing': 1.0883691151450816e-09}
+
+
+
+Training Model 5/5: DecisionTreeClassifier
+Best score: 0.529
+Best parameters: {'criterion': 'entropy', 'max_depth': 16, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2, 'splitter': 'best'}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.818
+Best parameters: {'tol': 0.001, 'shrinking': True, 'probability': False, 'max_iter': 500, 'kernel': 'rbf', 'gamma': 'scale', 'degree': 5, 'coef0': 1, 'C': 100}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.824
+Best parameters: {'tol': 0.001, 'shrinking': False, 'probability': True, 'max_iter': 1000, 'kernel': 'poly', 'gamma': 0.2, 'degree': 3, 'coef0': 0, 'C': 65}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.824
+Best parameters: {'tol': 0.0001, 'shrinking': False, 'probability': True, 'max_iter': 500, 'kernel': 'poly', 'gamma': 0.30000000000000004, 'degree': 2, 'coef0': -1, 'C': 78}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.814
+Best parameters: {'tol': 1e-05, 'shrinking': False, 'probability': True, 'max_iter': 549, 'kernel': 'poly', 'gamma': 0.7000000000000001, 'degree': 3, 'coef0': -1, 'C': 83}
+
+
+

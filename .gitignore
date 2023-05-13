@@ -3,3 +3,9 @@ Features.csv
 Features/
 labels.npy
 Sample/
+Labels_withGamma.npy
+Labels_cleaned.npy
+Features_cleaned.npy
+Features_withGamma.npy
+shit_1.jpg
+shit_2.jpg
