@@ -78,63 +78,9 @@ def segment(image):
 
     return segmented_image
 
-def Blobs(image):
-    # Convert the image to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    # Apply Laplacian of Gaussian (LoG) filter
-    log = cv2.GaussianBlur(gray, (5, 5), 0)
-    log = cv2.Laplacian(log, cv2.CV_8U, ksize=5)
-
-    # Threshold the filtered image to obtain a binary image
-    _, binary = cv2.threshold(log, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-
-    # Apply morphological operations to remove noise and fill gaps in the blobs
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
-    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
-
-    # Detect and extract the blobs using the SimpleBlobDetector in OpenCV
-    params = cv2.SimpleBlobDetector_Params()
-    params.minThreshold = 0
-    params.maxThreshold = 255
-    detector = cv2.SimpleBlobDetector_create(params)
-    keypoints = detector.detect(binary)
-
-    extracted_blobs = []
-
-    for kp in keypoints:
-        f = extract_from_keypoint(kp)
-        extracted_blobs.append(f)
-
-    return np.asarray(extracted_blobs).flatten()
-
-def numStraightLines(image):
-    edges = canny(image, 2, 1, 25)
-    lines = probabilistic_hough_line(
-        edges, threshold=10, line_length=5, line_gap=3)
-    return len(lines)
-
-def HUFunction(img):
-    '''
-        this is a utility function used to evaluate the HU features which 
-        are 7, which are invarient with size, rotation and transition. 
-        inputs:
-            img: the original Img
-        outputs:
-            the huMoments. 
-    '''
-    # Calculate Moments
-    moments = cv2.moments(img)
-    # Calculate Hu Moments
-    huMoments = cv2.HuMoments(moments)
-
-    return huMoments
-
 
 def FeatureExtraction(image):
     
-    Hu_M = HUFunction(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))
-
     preprocessed_image = segment(image)
 
     resized_image = resize(preprocessed_image, (64, 128))
@@ -142,41 +88,8 @@ def FeatureExtraction(image):
     hog_features = hog(resized_image, block_norm='L2-Hys', feature_vector=True,
                     transform_sqrt=True, pixels_per_cell=(12, 12), cells_per_block=(2, 2))
 
-    features = np.concatenate(((Hu_M.flatten()).reshape(-1,1), hog_features.reshape(-1,1)), axis=0)
+    return hog_features
 
-    return np.squeeze(features)
-
-
-def LoadData():
-    Features = []
-    labels = []
-
-    i = 0
-    for gender in ["men", "Women"]:
-        datadir = r"dataset_no3\{}".format(gender)
-        # loop over gender
-        for hand in os.listdir(datadir):
-            # loop over each class [0,1,2,3,4,5]
-            for img in os.listdir(datadir + "/" + str(hand)):
-                # ignoring anything except images
-                if ((img.split('.')[-1]).lower() not in ['jpg', 'png', 'jpeg']):
-                    continue
-
-                # loading our images
-                # approx 2500 * 4000
-                img_array = io.imread(datadir + "/" + str(hand) + "/" + img)
-
-                # append extracted features to Featurees list
-                Feature = FeatureExtraction(img_array)
-                Features.append(Feature)
-
-                # append class of image.
-                labels.append(int(hand))
-
-                print(f'image Number: {i}')
-                i += 1
-
-    return np.asarray(Features), np.asarray(labels)
 
 
 def testOurModel(path):
@@ -186,7 +99,7 @@ def testOurModel(path):
 
     y_pred = []
     datadir = path
-    svm = joblib.load('model_2_All_Images_HOG_HU.pkl')
+    svm = joblib.load('model_1_All_Images_HOG_Only.pkl')
     # loop over gender
 
     for img in sorted(os.listdir(datadir), key=lambda x: int(x.split('.')[0])):
