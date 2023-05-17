@@ -143,3 +143,15 @@ Best parameters: {'tol': 1e-05, 'shrinking': False, 'probability': True, 'max_it
 
 
 
+Training Model 1/1: SVC
+Best score: 0.683
+Best parameters: {'tol': 0.001, 'shrinking': False, 'probability': True, 'max_iter': 149, 'kernel': 'sigmoid', 'gamma': 'scale', 'degree': 3, 'coef0': -1, 'C': 37}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.835
+Best parameters: {'tol': 1e-05, 'shrinking': True, 'probability': False, 'max_iter': 199, 'kernel': 'poly', 'gamma': 0.6, 'degree': 3, 'coef0': 1, 'C': 51}
+
+
+
