@@ -119,3 +119,27 @@ Best parameters: {'tol': 1e-05, 'shrinking': False, 'probability': True, 'max_it
 
 
 
+Training Model 1/1: SVC
+Best score: 0.644
+Best parameters: {'tol': 0.0001, 'shrinking': True, 'probability': False, 'max_iter': 549, 'kernel': 'sigmoid', 'gamma': 'scale', 'degree': 4, 'coef0': 0, 'C': 13}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.828
+Best parameters: {'tol': 0.001, 'shrinking': True, 'probability': False, 'max_iter': 549, 'kernel': 'poly', 'gamma': 0.2, 'degree': 3, 'coef0': 1, 'C': 38}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.824
+Best parameters: {'tol': 0.001, 'shrinking': False, 'probability': True, 'max_iter': -1, 'kernel': 'poly', 'gamma': 0.9, 'degree': 3, 'coef0': 0, 'C': 90}
+
+
+
+Training Model 1/1: SVC
+Best score: 0.781
+Best parameters: {'tol': 1e-05, 'shrinking': False, 'probability': True, 'max_iter': 449, 'kernel': 'poly', 'gamma': 0.30000000000000004, 'degree': 2, 'coef0': -1, 'C': 87}
+
+
+
